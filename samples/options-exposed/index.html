@@ -1,0 +1,231 @@
+<html>
+
+<head>
+    <title>Hello World</title>
+    <style>
+        #dlInputs {
+            display: flex;
+            font-family: Arial, Helvetica, sans-serif
+        }   
+        canvas{
+            border:1px dashed black;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas>No canvas support :(</canvas>
+    <div id="results"></div>
+
+    <!-- not proud of this -->
+    <form action="index.html" enctype="text/plain" method="get">
+        <div id="dlInputs">
+            <dl>
+                <dt>Bar Min Value:</dt>
+                <dd>
+                    <input type="text" name="bar-min" value="1">
+                </dd>
+
+                <dt>Bar Max Value:</dt>
+                <dd>
+                    <input type="text" name="bar-max" value="50">
+                </dd>
+
+                <dt>Bar Top%:</dt>
+                <dd>
+                    <input type="text" name="bar-top" value="50">
+                </dd>
+
+                <dt>Bar Left%:</dt>
+                <dd>
+                    <input type="text" name="bar-left" value="10">
+                </dd>
+
+                <dt>Bar Right%:</dt>
+                <dd>
+                    <input type="text" name="bar-right" value="10">
+                </dd>
+
+                <dt>Bar Width:</dt>
+                <dd>
+                    <input type="text" name="bar-width" value="5">
+                </dd>
+
+                <dt>Bar Colour:</dt>
+                <dd>
+                    <input type="text" name="bar-colour" value="black">
+                </dd>
+            </dl>
+            <dl>
+                <dt>Label Colour:</dt>
+                <dd>
+                    <input type="text" name="label-colour" value="black">
+                </dd>
+
+                <dt>Label Font:</dt>
+                <dd>
+                    <input type="text" name="label-font" value="16px Arial">
+                </dd>
+
+                <dt>Label Min Text:</dt>
+                <dd>
+                    <input type="text" name="label-min-text" value="Min">
+                </dd>
+
+                <dt>Label Mid Text:</dt>
+                <dd>
+                    <input type="text" name="label-mid-text" value="Mid">
+                </dd>
+
+                <dt>Label Max Text:</dt>
+                <dd>
+                    <input type="text" name="label-max-text" value="Max">
+                </dd>
+                <dt>Label Alignment:</dt>
+                <dd>
+                    <input type="text" name="label-alignment" value="2">
+                </dd>
+            </dl>
+            <dl>
+                <dt>Question Text:</dt>
+                <dd>
+                    <input type="text" name="question-text" value="My Question...">
+                </dd>
+
+                <dt>Question Colour:</dt>
+                <dd>
+                    <input type="text" name="question-colour" value="black">
+                </dd>
+
+                <dt>Question Font:</dt>
+                <dd>
+                    <input type="text" name="question-font" value="18px Arial">
+                </dd>
+
+                <dt>Question Left Margin %:</dt>
+                <dd>
+                    <input type="text" name="question-left" value="10">
+                </dd>
+
+                <dt>Question Top %:</dt>
+                <dd>
+                    <input type="text" name="question-top" value="10">
+                </dd>
+
+                <dt>Pen Width:</dt>
+                <dd>
+                    <input type="text" name="pen-width" value="2">
+                </dd>
+
+                <dt>Pen Colour:</dt>
+                <dd>
+                    <input type="text" name="pen-colour" value="black">
+                </dd>
+            </dl>
+            <dl>
+                <dt>Marker Colour:</dt>
+                <dd>
+                    <input type="text" name="marker-colour" value="black">
+                </dd>
+                <dt>Marker Width:</dt>
+                <dd>
+                    <input type="text" name="marker-width" value="5">
+                </dd>
+                <dt>Marker Length:</dt>
+                <dd>
+                    <input type="text" name="marker-length" value="50">
+                </dd>
+            </dl>
+            <button type="submit">Reload Ellipse</button>
+        </div>
+    </form>
+
+    <script src="../../dist/ellipse.js"></script>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function (event) {
+            //Need to support our stupid GET form
+            var $_GET = (() => { // a little PHP joke :3
+                result = {};
+                location.search
+                    .substr(1)
+                    .split("&")
+                    .forEach(function (item) {
+                        tmp = item.split("=");
+                        result[tmp[0]] = decodeURIComponent((tmp[1] + '').replace(/\+/g, '%20')); //fix query string spaces
+                    });
+                return result;
+            })();
+
+            //update the form elements based on $_GET vars if there are any
+            //we can assume all or nothing due to the form submission
+            if (Object.keys($_GET).length > 1) {
+                document.querySelectorAll("input").forEach(x => {
+                    x.value = $_GET[x.name]; //is it really this simple?!
+                });
+            }
+
+            //setup the canvas based on the form elements ;)
+            let getNamedInputValue = name => document.querySelector(`input[name='${name}']`).value; //thank god for es2015
+
+            Ellipse.attach("canvas",
+                {
+                    question: getNamedInputValue("question-text"),
+                    rangeBarLeft: getNamedInputValue("bar-left"),
+                    rangeBarRight: getNamedInputValue("bar-right"),
+                    rangeBarMin: parseInt(getNamedInputValue("bar-min")),
+                    rangeBarMax: parseInt(getNamedInputValue("bar-max"))
+                },
+                {
+                    rangeMarkers: {
+                            markers: [10, 40],
+                            colour: getNamedInputValue("marker-colour"), 
+                            width: getNamedInputValue("marker-width"),
+                            length: getNamedInputValue("marker-length")
+                        },
+                    question: {
+                        top: getNamedInputValue("question-top"),
+                        left: getNamedInputValue("question-left"),
+                        font: getNamedInputValue("question-font"),
+                        colour: getNamedInputValue("question-colour")
+                    },
+                    pen: {
+                        width: getNamedInputValue("pen-width"),
+                        colour: getNamedInputValue("pen-colour")
+                    },
+                    rangeBar: {
+                        top: getNamedInputValue("bar-top"),
+                        colour: getNamedInputValue("bar-colour"),
+                        width: getNamedInputValue("bar-width"),
+                        minLabel: {
+                            text: getNamedInputValue("label-min-text"),
+                            font: getNamedInputValue("label-font"),
+                            colour: getNamedInputValue("label-colour"),
+                            alignment: getNamedInputValue("label-alignment")                            
+                        },
+                        midLabel: {
+                            text: getNamedInputValue("label-mid-text"),
+                            font: getNamedInputValue("label-font"),
+                            colour: getNamedInputValue("label-colour"),
+                            alignment: getNamedInputValue("label-alignment")  
+                        },
+                        maxLabel: {
+                            text: getNamedInputValue("label-max-text"),
+                            font: getNamedInputValue("label-font"),
+                            colour: getNamedInputValue("label-colour"),
+                            alignment: getNamedInputValue("label-alignment")  
+                        }
+                    }
+                });
+            
+            document.querySelector("canvas").addEventListener("EllipseCompleted", e => {
+                let o = e.detail;
+                let d = document.querySelector("#results")
+                d.innerHTML = `min: ${o.rangeMin}<br>`;
+                d.innerHTML += `max: ${o.rangeMax}<br>`;
+            });
+        })
+    </script>
+</body>
+
+</html>

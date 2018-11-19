@@ -1,0 +1,44 @@
+{
+  "name": "descsys.ellipse",
+  "version": "0.1.0",
+  "description": "The DECSYS Project Ellipse Tool",
+  "main": "src/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "paths": {
+    "src": "./src",
+    "dest": "./dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:decsys/canvas-ellipse.git"
+  },
+  "author": "Jonathan Couldridge <jcouldridge@outlook.com>",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "@types/chai": "^4.0.3",
+    "@types/expect": "^1.20.1",
+    "@types/mocha": "^2.2.41",
+    "@types/sinon": "^2.3.3",
+    "browserify": "^14.4.0",
+    "chai": "^4.1.1",
+    "del": "^3.0.0",
+    "gulp": "^3.9.1",
+    "gulp-header": "^1.8.9",
+    "gulp-mocha": "^4.3.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "gulp-util": "^3.0.8",
+    "mocha": "^3.5.0",
+    "mocha-junit-reporter": "^1.13.0",
+    "sinon": "^3.2.0",
+    "ts-node": "^3.3.0",
+    "tsify": "^3.0.1",
+    "typescript": "^2.4.2",
+    "victor": "^1.1.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
+  }
+}

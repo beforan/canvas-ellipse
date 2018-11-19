@@ -1,0 +1,73 @@
+<html>
+
+<head>
+    <title>Hello World</title>
+</head>
+
+<body>
+    <canvas>No canvas support :(</canvas>
+    <div id="results"></div>
+
+    <script src="../../dist/ellipse.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function (event) {
+            Ellipse.attach("canvas",
+                {
+                    question: "What's the difference between a duck?",
+                    rangeBarLeft: 10,
+                    rangeBarRight: 10,
+                    rangeBarMin: 1,
+                    rangeBarMax: 50
+                },
+                {
+                    rangeMarkers: { 
+                        markers: [10, 40],
+                        colour: "black",
+                        width: 10,
+                        length: 100
+                    },
+                    question: {
+                        top: 10,
+                        left: 20,
+                        font: "32px Tahoma",
+                        colour: "red"
+                    },
+                    pen: {
+                        width: 2,
+                        colour: "orange"
+                    },
+                    rangeBar: {
+                        top: 30,
+                        colour: "green",
+                        width: 8,
+                        minLabel: {
+                            text: "Min",
+                            font: "24px Comic Sans MS",
+                            colour: "blue",
+                            alignment: 1
+                        },
+                        midLabel: {
+                            text: "Mid",
+                            font: "24px Comic Sans MS",
+                            colour: "blue",
+                            alignment: 2
+                        },
+                        maxLabel: {
+                            text: "Max"
+                        }
+                    }
+                });
+            document.querySelector("canvas").addEventListener("EllipseCompleted", e => {
+                let o = e.detail;
+                let d = document.querySelector("#results")
+                d.innerHTML = `barMin: ${o.barMin}<br>`;
+                d.innerHTML += `barMax: ${o.barMax}<br>`;
+                d.innerHTML += `min: ${o.rangeMin}<br>`;
+                d.innerHTML += `max: ${o.rangeMax}<br>`;
+                d.innerHTML += `completed: ${o.completed}`;
+            });
+        })
+    </script>
+</body>
+
+</html>
